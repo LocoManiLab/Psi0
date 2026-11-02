@@ -1,3 +1,27 @@
+> [!NOTE]
+> **LocoManiLab modifications.** This repository is a fork of
+> [physical-superintelligence-lab/Psi0](https://github.com/physical-superintelligence-lab/Psi0)
+> at commit `69417077ee7192a620835d8d77b4f47b2f4640a7`, modified for the
+> [LocoManiLab](https://github.com/Gamma-Robot/LocoManiLab) benchmark (Gamma Robotics).
+> The original Apache-2.0 [LICENSE](./LICENSE) applies to this fork; the changes below are
+> provided under the same license.
+>
+> Summary of changes:
+> - LeRobot converters for LocoManiLab Unitree G1 datasets (SONIC, HeFT and AMO whole-body controllers).
+> - Controller-specific trainers for HeFT and AMO, and SONIC trainer adjustments.
+> - A GR00T-protocol compatible policy server used by the LocoManiLab runtime.
+> - `third_party/SIMPLE` bumped to a newer upstream commit; its submodule URL uses HTTPS.
+>   Note that SIMPLE's own nested submodules (e.g. `openpi-client`, `unitree_sdk2_python`,
+>   `decoupled_wbc`, `XRoboToolkit-PC-Service-Pybind_X86_and_ARM64`) are declared with SSH URLs
+>   upstream, so a recursive checkout of them requires GitHub SSH access.
+>
+> Added files: `scripts/data/locomanilab_{sonic,heft,amo}_to_psi_lerobot.py`,
+> `scripts/data/soma_{sonic,heft,amo}_to_psi_lerobot.py` (legacy-name wrappers),
+> `src/psi/deploy/run_psi0_server.py`, `src/psi/trainers/amo.py`, `src/psi/trainers/heft.py`,
+> `tests/test_locomanilab_entrypoints.py`.
+> Modified files: `src/psi/trainers/sonic.py`, `.gitmodules`, `third_party/SIMPLE` (gitlink),
+> `README.md` (this section).
+
 <h1 align="center">[RSS26'] Ψ₀: An Open Foundation Model <br/> Towards Universal Humanoid Loco-Manipulation
 </h1>
 

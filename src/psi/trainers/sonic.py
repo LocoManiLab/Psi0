@@ -234,8 +234,14 @@ class SonicTrainer(Trainer):
     def create_dataloaders(self, train_dataset, val_dataset):
         g = torch.Generator()
         g.manual_seed(self.cfg.seed or 42)
+        # 12 + 12 spawned workers is a lot to ask of a shared box: on a loaded cluster
+        # node whose data volume is a network mount, `import torch` in a fresh worker
+        # takes ~70s and can wedge in uninterruptible IO, which shows up as the trainer
+        # hanging silently at "Eval at global step 0" (the parent blocks writing the
+        # spawn payload). PSI_NUM_WORKERS lets the caller dial it down.
+        num_workers = int(os.environ.get("PSI_NUM_WORKERS", "12"))
         train_dataloader_kwargs = {
-            "num_workers": 12,
+            "num_workers": num_workers,
             "drop_last": True,
             "shuffle": True,
             "generator": g,
@@ -244,7 +250,7 @@ class SonicTrainer(Trainer):
         }
 
         val_dataloader_kwargs = {
-            "num_workers": 12,
+            "num_workers": num_workers,
             "drop_last": False,
             # "pin_memory": True,
             "persistent_workers": True,
